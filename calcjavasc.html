@@ -1,0 +1,264 @@
+<html>
+    <head>
+        <style>
+            .box{
+                height:500px;
+                width:400px;
+                background-color: black;
+                margin:auto                
+            }
+            input{ 
+                height:20%;
+                width:100%;
+                text-align: end;
+                font-size: 30px;
+                background-color: black;
+                border: none;
+                color: white;
+                outline: none;
+            }
+            .numbers{
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                border-top-left-radius: 3%;
+                border-top-right-radius: 3%;
+                height:80%;
+                width:100%;
+                background-color:rgb(54, 52, 52);
+            }
+            
+            
+            button{
+                margin-left: 2%;
+                height:20%;
+                width:20%;
+                background-color: transparent;
+                
+                border-radius: 50%;
+                border: none;
+                font-size: 25px;
+                outline: none;
+            }
+            button:active{
+                background-color: rgb(58, 56, 56);
+                
+            }
+            .equal{
+                border-radius: 0%;
+                background-color: rgb(255, 174, 0);
+                color: white;
+                
+            }
+            .equal:active{
+                background-color:rgb(255, 174, 0) ;
+            }
+            .color-white{
+                color: white;
+            }
+            .right-operators{
+                color:rgb(255, 174, 0) ;
+            }
+            
+
+        </style>
+    </head>
+    <body>
+        <div class="box">
+            <div class="input" >
+                <input type="text" value="" onchange="changeHandler()" >
+
+            </div>
+            <div class="numbers">
+                
+                    <button class="color-white" onclick="ac()">AC </button>
+                    <button class="color-white" onclick="deleteBtn()">DEL</button>
+                    <button class="color-white" onclick="akash('%')">%</button>
+                    <button class="right-operators" onclick="akash('/')"> ÷</button>
+               
+                    <button class="color-white" onclick="akash('7')">7</button>
+                    <button class="color-white" onclick="akash('8')">8</button>
+                    <button class="color-white" onclick="akash('9')">9</button>
+
+               
+
+               
+                    <button class="right-operators" onclick="akash('*')">*</button>
+                    <button class="color-white" onclick="akash('4')">4</button>
+                    <button class="color-white" onclick="akash('5')">5</button>
+                
+               
+                    <button class="color-white" onclick="akash('6')">6</button>
+                    <button class="right-operators" onclick="akash('-')">-</button>
+                    <button class="color-white" onclick="akash('1')">1</button>
+                    
+                
+                
+                    <button class="color-white" onclick="akash('2')">2</button>
+                    <button class="color-white" onclick="akash('3')">3</button>
+                    <button class="right-operators" onclick="akash('+')">+</button>
+
+                    <button class="color-white" onclick="akash('.')">.</button>
+                    <button class="color-white" onclick="akash('0')">0</button>
+                    <button class="color-white" onclick="akash('()')">()</button>
+                    <button class="equal" onclick="solution()">=</button>
+
+
+               
+
+            </div>
+
+
+        </div>
+        <script>
+            class Stack{
+	constructor(){
+  	this.arr=[]
+                }
+                pushData(data){
+                    this.arr[this.arr.length]=data;
+                }
+                peek(){
+                    return this.arr[this.arr.length-1]
+                }
+                popData(){
+                    if(this.isEmpty()){
+                        return  ;
+                    }
+                    else{
+                        var lastElement= this.arr[this.arr.length-1];
+                    this.arr.length = this.arr.length-1;
+                    return lastElement;
+                    
+                    }
+                    
+                }
+                isEmpty(){
+                    if(this.arr.length==0)
+                        return true;
+                    return false;
+                }
+                displayStack(){
+                    if(this.isEmpty()){
+                        console.log('Stack is Empty')
+                    }
+                    else{
+                    for(var i=0;i<this.arr.length;i++){
+                                console.log(this.arr[i])
+                    }
+                    
+                    }
+                    
+                }
+                }
+
+                function isBalanced(data){
+                    let arr = data ? data.split('') : [];
+                    var s = new Stack();
+                for(var i=0;i<arr.length;i++){
+                    if(arr[i]=='('|| arr[i]=='{' || arr[i]=='['){
+                        console.log('pushing')
+                    console.log('(', arr[i]);
+                        s.pushData(arr[i]);
+                    }
+                    if(arr[i]==')'|| arr[i]=='}' || arr[i]==']'){
+                    console.log(')', arr[i]);
+                        if(s.isEmpty()){
+                        return false;
+                    } else if(!isMatchingPair(s.popData(),arr[i])){
+                            return false;
+                        }
+                    }
+                
+                }
+                if(s.isEmpty()){
+                    return true;
+                }
+                else{
+                    return false;
+                }
+                }
+
+                function isMatchingPair(char1,char2){
+                console.log(char1, char2);
+                    if(char1=='('&& char2==')'){
+                    return true;
+                }
+                else if(char1=='{'&& char2=='}'){
+                    return true;
+                }
+                else if(char1=='['&& char2 == ']'){
+                    return true;
+                }
+                else{
+                    return false;
+                }
+                }
+
+            const regex=/^[A-Za-z]+$/;
+            
+            var inputVar= document.getElementsByTagName("input")[0]; 
+            // function changeHandler(e){   
+            //     if(inputVar.value=='a'){
+            //         console.log('yo')
+            //     }
+            // }  
+            var bracketStr='';         
+            function akash(val){
+                if(val=='()'){
+                    if(inputVar.value.includes('(')==false || isBalanced(bracketStr)){
+                        bracketStr = bracketStr+'('
+                        return  inputVar.value = inputVar.value+'(';
+                    }
+                    // else if(inputVar.value.includes(')')==true  ){
+                    //     return inputVar.value = inputVar.value+'('
+                    // }
+                    else if(inputVar.value[inputVar.value.length-1]==')' || !isNaN(inputVar.value[inputVar.value.length-1]) &&!isBalanced(bracketStr)){
+                        bracketStr = bracketStr+')'
+                        return inputVar.value = inputVar.value+')'
+                    }
+                    else{
+                        bracketStr = bracketStr+'('
+                       return  inputVar.value = inputVar.value+'('
+                    }
+                    
+                }
+                if(val=='.'&& inputVar.value[inputVar.value.length-1]=='.'){
+                    return inputVar.value = inputVar.value + '';
+                }
+                if(inputVar.value.length<=0){
+                     if(val!=='+'&& val!=='*' && val!=='/'){
+                        return  inputVar.value = inputVar.value + val;
+                    }
+                                        
+                }
+                else{
+                    if((inputVar.value[inputVar.value.length-1]=='+'||inputVar.value[inputVar.value.length-1]=='-'||inputVar.value[inputVar.value.length-1]=='/'||inputVar.value[inputVar.value.length-1]=='*')  && (val=='+' || val=='-' || val=='*'|| val=='/')){
+                         return inputVar.value = inputVar.value.slice(0,-1) + val 
+                }
+                    else{
+                         return inputVar.value = inputVar.value + val;
+                    }
+                }
+                
+                    
+               
+            }
+            function solution (){
+                if(isNaN(eval(inputVar.value))){
+                    return inputVar.value=inputVar.value+''
+                }
+                else{
+                    return inputVar.value=eval(inputVar.value)
+                };
+            }
+            function ac(){
+                return inputVar.value='';
+            }
+            function deleteBtn(){
+                return inputVar.value = inputVar.value.slice(0,-1);
+            }
+        </script>
+    </body>
+</html>
